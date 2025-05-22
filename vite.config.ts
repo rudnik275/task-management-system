@@ -27,6 +27,7 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
     Components({
+      dts: 'src/types/auto-generated/components.d.ts',
       resolvers: [ElementPlusResolver()],
     }),
     vueDevTools(),
