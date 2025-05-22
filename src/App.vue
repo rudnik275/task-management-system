@@ -2,10 +2,7 @@
 </script>
 
 <template>
-  <ElContainer>
-    <!--    <ElHeader>-->
-    <!--      <RouterLink to="/">Home</RouterLink>-->
-    <!--    </ElHeader>-->
+  <ElContainer class="container">
     <ElMain>
       <RouterView/>
     </ElMain>

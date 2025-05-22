@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useApi} from '@/composables/api.ts'
+import {useApi} from '@/plugins/api'
 
 const projects = ref([])
 
@@ -10,7 +10,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  Projects:
+  <h1>
+    Projects
+  </h1>
+
+  <ElTable>
+    
+  </ElTable>
   <RouterLink to="/project1">
     project1
   </RouterLink>
