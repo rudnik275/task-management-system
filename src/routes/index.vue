@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import {RouterLink} from 'vue-router'
 </script>
 
 <template>
-  <nav>
-    <RouterLink to="/">Home</RouterLink>
-  </nav>
   Projects:
+  <RouterLink to="/project1">
+    project1
+  </RouterLink>
 </template>
 
 <style>

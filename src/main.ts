@@ -1,23 +1,19 @@
 import './assets/index.css'
-import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
 import {createApp} from 'vue'
 import {createPinia} from 'pinia'
-import {routes} from 'vue-router/auto-routes'
-import {createRouter, createWebHistory} from 'vue-router'
+import ElementPlus from 'element-plus'
+import {router} from '@/plugins/router.ts'
+import {ElementPlusIcons} from '@/plugins/icons.ts'
 
 import App from './App.vue'
 
 const app = createApp(App)
 
 app.use(createPinia())
-app.use(
-  createRouter({
-    history: createWebHistory(),
-    routes
-  })
-)
+app.use(router)
+app.use(ElementPlusIcons)
 app.use(ElementPlus)
 
 app.mount('#app')

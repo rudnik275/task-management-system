@@ -8,6 +8,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -24,11 +25,21 @@ export default defineConfig({
       ],
       dts: 'src/types/auto-generated/auto-imports.d.ts',
       vueTemplate: true,
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        ElementPlusResolver(),
+        IconsResolver({
+          prefix: 'Icon',
+        }),
+      ],
     }),
     Components({
       dts: 'src/types/auto-generated/components.d.ts',
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        IconsResolver({
+          enabledCollections: ['ep'],
+        }),
+        ElementPlusResolver()
+      ],
     }),
     vueDevTools(),
     ElementPlus({})
