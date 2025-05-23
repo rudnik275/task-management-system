@@ -8,24 +8,22 @@ import type {Project} from '@/types'
 describe('EditProjectDialog', () => {
   const createWrapper = () => {
     const patchMock = vi.fn().mockResolvedValue({})
-    const postMock = vi.fn()
     const wrapper = mount(EditProjectDialog, {
       global: {
         provide: {
           [apiInjectionKey]: {
             patch: patchMock,
-            post: postMock
           }
         }
       }
     })
+    const vm = wrapper.vm as InstanceType<typeof EditProjectDialog>
     
-    return {wrapper, patchMock}
+    return {wrapper, patchMock, vm}
   }
   
   it('should render initial project name in input', async () => {
-    const {wrapper} = createWrapper()
-    const vm = wrapper.vm as InstanceType<typeof EditProjectDialog>
+    const {wrapper, vm} = createWrapper()
     const project = {id: 1, name: 'Test Project'} as Project
     
     vm.open(project)
@@ -37,8 +35,7 @@ describe('EditProjectDialog', () => {
   })
   
   it('should update input value on type', async () => {
-    const {wrapper} = createWrapper()
-    const vm = wrapper.vm as InstanceType<typeof EditProjectDialog>
+    const {wrapper, vm} = createWrapper()
     
     const project = {id: 1, name: 'Test Project'} as Project
     vm.open(project)
@@ -51,8 +48,7 @@ describe('EditProjectDialog', () => {
   })
   
   it('should send updated data to correct api endpoint', async () => {
-    const {wrapper, patchMock} = createWrapper()
-    const vm = wrapper.vm as InstanceType<typeof EditProjectDialog>
+    const {wrapper, patchMock, vm} = createWrapper()
     
     const project = {id: 1, name: 'Test Project'} as Project
     const openPromise = vm.open(project)
