@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {type Task, TaskPriority, TaskStatus} from '@/types'
-
 import Dialog from './Dialog.vue'
 import {useApi} from '@/plugins/api'
 

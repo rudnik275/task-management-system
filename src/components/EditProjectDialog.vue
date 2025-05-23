@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type {Project} from '@/types'
-
 import Dialog from './Dialog.vue'
 import {useApi} from '@/plugins/api'
 

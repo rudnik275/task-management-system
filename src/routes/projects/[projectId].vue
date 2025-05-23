@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import {type Project, type Task, TaskStatus} from '@/types'
-
+import {type Project, type Task} from '@/types'
 import {useApi} from '@/plugins/api'
 import {ElMessageBox} from 'element-plus'
 import EditTaskDialog from '@/components/EditTaskDialog.vue'
-import TaskStatusTag from '@/components/TaskStatusTag.vue'
-import {formatDate} from '@/composables/format-date.ts'
+import TaskCard from '@/components/TaskCard.vue'
+import TaskFilterStatus from '@/components/TaskFilterStatus.vue'
+import TaskSortPriority from '@/components/TaskSortPriority.vue'
 
 const api = useApi()
 const route = useRoute('/projects/[projectId]')
@@ -16,23 +16,6 @@ const projectId = computed(() => +route.params.projectId)
 const isLoading = ref(false)
 const prioritySort = ref()
 const statusFilter = ref()
-const statusFilterOptions = [{
-  label: 'Pending',
-  value: TaskStatus.Pending
-}, {
-  label: 'In progress',
-  value: TaskStatus.InProgress
-}, {
-  label: 'Completed',
-  value: TaskStatus.Completed
-}]
-const prioritySortOptions = [{
-  label: 'Low to High',
-  value: 'asc'
-}, {
-  label: 'High to Low',
-  value: 'desc'
-}]
 
 const loadProjectTasks = async () => {
   isLoading.value = true
@@ -75,7 +58,6 @@ const removeTask = async (task: Task) => {
     // in case need to do something on cancel
   }
 }
-
 </script>
 
 <template>
@@ -98,29 +80,8 @@ const removeTask = async (task: Task) => {
     </RouterLink>
 
     <div class="project-tasks__filter-panel__filters">
-      <ElSelect
-        v-model="statusFilter"
-        placeholder="Filter by status"
-        clearable
-      >
-        <ElOption
-          v-for="{label, value} in statusFilterOptions"
-          :label="label"
-          :value="value"
-        />
-      </ElSelect>
-
-      <ElSelect
-        v-model="prioritySort"
-        placeholder="Sort by priority"
-        clearable
-      >
-        <ElOption
-          v-for="{label, value} in prioritySortOptions"
-          :label="label"
-          :value="value"
-        />
-      </ElSelect>
+      <TaskFilterStatus v-model="statusFilter"/>
+      <TaskSortPriority v-model="prioritySort"/>
     </div>
   </div>
   <div
@@ -128,37 +89,12 @@ const removeTask = async (task: Task) => {
     v-loading="isLoading"
   >
     <template v-if="projectTasks.length">
-      <ElCard v-for="task in projectTasks">
-        <template #header>
-
-          <div class="task-card__header">
-            <TaskStatusTag :status="task.status"/>
-            <ElButtonGroup>
-              <ElButton
-                icon="edit"
-                @click="openEditTaskDialog(task)"
-              />
-              <ElButton
-                icon="delete"
-                @click="removeTask(task)"
-              />
-            </ElButtonGroup>
-          </div>
-
-          <div class="task-card__priority">
-            <ElText type="info">Priority:</ElText>
-            {{ task.priority }}
-          </div>
-
-          <div>
-            <ElText type="info">Due date:</ElText>
-            {{ formatDate(task.dueDate) }}
-          </div>
-        </template>
-
-        <div class="task-card__title">{{ task.title }}</div>
-        <div class="task-card__description">{{ task.description }}</div>
-      </ElCard>
+      <TaskCard
+        v-for="task in projectTasks"
+        :task="task"
+        @edit="openEditTaskDialog(task)"
+        @remove="removeTask(task)"
+      />
     </template>
 
     <ElEmpty v-else description="Empty"/>
@@ -207,30 +143,5 @@ const removeTask = async (task: Task) => {
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
-}
-
-.task-card__header {
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
-.task-card__priority {
-  margin: 8px 0;
-}
-
-.task-card__title {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.task-card__description {
-  line-height: 1.4;
-  margin-top: 12px;
-  font-size: 14px;
-  color: var(--el-color-info);
 }
 </style>

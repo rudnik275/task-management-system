@@ -24,8 +24,8 @@ taskTable.push({
   projectId: newProject.id,
   title: 'first task',
   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis consectetur, corporis debitis dignissimos eaque et fugiat hic in incidunt magni minus modi officia officiis perferendis, quas quia recusandae temporibus.',
-  status: 'pending',
-  dueDate: '',
+  status: 'completed',
+  dueDate: new Date().toISOString(),
   priority: 'medium'
 })
 taskTable.push({
@@ -34,7 +34,7 @@ taskTable.push({
   title: 'first task',
   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis consectetur, corporis debitis dignissimos eaque et fugiat hic in incidunt magni minus modi officia officiis perferendis, quas quia recusandae temporibus.',
   status: 'pending',
-  dueDate: '',
+  dueDate: new Date().toISOString(),
   priority: 'medium'
 })
 
