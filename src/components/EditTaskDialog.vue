@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type {Task} from '@/types'
+import {type Task, TaskPriority, TaskStatus} from '@/types'
 
 import Dialog from './Dialog.vue'
 import {useApi} from '@/plugins/api'
@@ -8,12 +8,35 @@ const api = useApi()
 
 const formDefaults = {
   title: '',
-  description: ''
+  description: '',
+  dueDate: '',
+  status: TaskStatus.Pending,
+  priority: TaskPriority.Medium
 } as Task
 
 const form = ref({...formDefaults})
 const isLoading = ref(false)
 const dialogInstance = ref<InstanceType<typeof Dialog>>()
+const priorityOptions = [{
+  label: 'Low',
+  value: TaskPriority.Low
+}, {
+  label: 'Medium',
+  value: TaskPriority.Medium
+}, {
+  label: 'High',
+  value: TaskPriority.High
+}]
+const statusOptions = [{
+  label: 'Pending',
+  value: TaskStatus.Pending
+}, {
+  label: 'In progress',
+  value: TaskStatus.InProgress
+}, {
+  label: 'Completed',
+  value: TaskStatus.Completed
+}]
 
 defineExpose({
   open: async (projectId: number, formState?: Task) => {
@@ -39,13 +62,33 @@ defineExpose({
   <Dialog ref="dialogInstance">
     <ElForm
       :model="form"
+      label-width="auto"
       v-loading="isLoading"
     >
+      <ElFormItem label="Due date">
+        <ElDatePicker
+          v-model="form.dueDate"
+          type="date"
+          placeholder="Pick a day"
+        />
+      </ElFormItem>
+      <ElFormItem label="Priority">
+        <ElSegmented
+          v-model="form.priority"
+          :options="priorityOptions"
+        />
+      </ElFormItem>
+      <ElFormItem label="Status">
+        <ElSegmented
+          v-model="form.status"
+          :options="statusOptions"
+        />
+      </ElFormItem>
       <ElFormItem label="Title">
         <ElInput v-model="form.title" autocomplete="off"/>
       </ElFormItem>
       <ElFormItem label="Description">
-        <ElInput v-model="form.description" autocomplete="off"/>
+        <ElInput v-model="form.description" autocomplete="off" type="textarea"/>
       </ElFormItem>
     </ElForm>
   </Dialog>

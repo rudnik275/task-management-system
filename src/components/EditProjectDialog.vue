@@ -37,6 +37,7 @@ defineExpose({
   <Dialog ref="dialogInstance">
     <ElForm
       :model="form"
+      label-width="auto"
       v-loading="isLoading"
     >
       <ElFormItem label="Name">

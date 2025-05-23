@@ -14,11 +14,8 @@ const project = ref({} as Project)
 const projectId = computed(() => +route.params.projectId)
 const isLoading = ref(false)
 const prioritySort = ref()
-const statusFilter = ref('')
+const statusFilter = ref()
 const statusFilterOptions = [{
-  label: 'None',
-  value: ''
-}, {
   label: 'Pending',
   value: TaskStatus.Pending
 }, {
@@ -27,6 +24,13 @@ const statusFilterOptions = [{
 }, {
   label: 'Completed',
   value: TaskStatus.Completed
+}]
+const prioritySortOptions = [{
+  label: 'Low to High',
+  value: 'asc'
+}, {
+  label: 'High to Low',
+  value: 'desc'
 }]
 
 const loadProjectTasks = async () => {
@@ -85,23 +89,30 @@ const removeTask = async (task: Task) => {
       <ElButton icon="arrow-left">Back to all projects</ElButton>
     </RouterLink>
 
-    <div>
-      <ElFormItem label="Sort by priority">
-        <ElSelect
-          v-model="prioritySort"
-          clearable
-        >
-          <ElOption label="Low to High" value="asc"/>
-          <ElOption label="High to Low" value="desc"/>
-        </ElSelect>
-      </ElFormItem>
-
-      <ElFormItem label="Filter by status">
-        <ElSegmented
-          v-model="statusFilter"
-          :options="statusFilterOptions"
+    <div class="project-tasks__filter-panel__filters">
+      <ElSelect
+        v-model="prioritySort"
+        placeholder="Sort by priority"
+        clearable
+      >
+        <ElOption
+          v-for="{label, value} in prioritySortOptions"
+          :label="label"
+          :value="value"
         />
-      </ElFormItem>
+      </ElSelect>
+
+      <ElSelect
+        v-model="statusFilter"
+        placeholder="Filter by status"
+        clearable
+      >
+        <ElOption
+          v-for="{label, value} in statusFilterOptions"
+          :label="label"
+          :value="value"
+        />
+      </ElSelect>
     </div>
   </div>
   <div
@@ -161,7 +172,16 @@ const removeTask = async (task: Task) => {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+}
+
+.project-tasks__filter-panel__filters {
+  display: flex;
+  gap: 12px;
+
+  & > * {
+    width: 200px;
+  }
 }
 
 .project-tasks__list {
