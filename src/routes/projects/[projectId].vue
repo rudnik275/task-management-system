@@ -5,6 +5,7 @@ import {useApi} from '@/plugins/api'
 import {ElMessageBox} from 'element-plus'
 import EditTaskDialog from '@/components/EditTaskDialog.vue'
 import TaskStatusTag from '@/components/TaskStatusTag.vue'
+import {formatDate} from '@/composables/format-date.ts'
 
 const api = useApi()
 const route = useRoute('/projects/[projectId]')
@@ -74,6 +75,7 @@ const removeTask = async (task: Task) => {
     // in case need to do something on cancel
   }
 }
+
 </script>
 
 <template>
@@ -149,7 +151,7 @@ const removeTask = async (task: Task) => {
 
         <div>
           <ElText type="info">Due date:</ElText>
-          {{ task.dueDate }}
+          {{ formatDate(task.dueDate) }}
         </div>
       </template>
 

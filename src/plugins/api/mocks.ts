@@ -44,18 +44,33 @@ const routes = {
   projectTaskDetails: new RegExp('^/projects/(\\d+)/tasks/(\\d+)$'),
 } as const
 
+const serializeProject = (project: ProjectTableRecord) => {
+  const projectTasks = taskTable
+    .filter(task => task.projectId === project.id)
+    .filter(task => task.dueDate)
+  
+  projectTasks.sort((a, b) => {
+    return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime()
+  })
+  
+  return {
+    ...project,
+    dueDate: projectTasks[0]?.dueDate
+  }
+}
+
 export const fetchApi = (path: string, method = 'get', body: Record<string, any> = {}) => {
   if (path === '/projects') {
     switch (method) {
       case 'get':
-        return projectTable
+        return projectTable.map(serializeProject)
       case 'post': {
         const newProject = {
           id: idCounter++,
           ...body
         } as Project
         projectTable.push(newProject)
-        return newProject
+        return serializeProject(newProject)
       }
     }
   }
@@ -66,7 +81,7 @@ export const fetchApi = (path: string, method = 'get', body: Record<string, any>
     
     switch (method) {
       case 'get':
-        return projectTable.find(r => r.id === projectId)
+        return serializeProject(projectTable.find(r => r.id === projectId)!)
       case 'delete': {
         const indexToRemove = projectTable.findIndex(r => r.id === projectId)
         if (indexToRemove === -1) throw new Error('Project not found')
@@ -79,7 +94,7 @@ export const fetchApi = (path: string, method = 'get', body: Record<string, any>
         if (!project) throw new Error('Project not found')
         
         project.name = body.name
-        return project
+        return serializeProject(project)
       }
     }
   }

@@ -3,6 +3,7 @@ import {useApi} from '@/plugins/api'
 import type {Project} from '@/types'
 import EditProjectDialog from '@/components/EditProjectDialog.vue'
 import {ElMessageBox} from 'element-plus'
+import {formatDate} from '@/composables/format-date.ts'
 
 const projects = ref<Project[]>([])
 
@@ -67,8 +68,6 @@ const removeProject = async (project: Project) => {
     </ElButton>
   </div>
 
-  <!-- TODO: fix update (rerender) table on change -->
-  <pre>{{ projects }}</pre>
   <ElTable
     :data="projects"
     v-loading="isLoading"
@@ -85,7 +84,9 @@ const removeProject = async (project: Project) => {
       </ElButtonGroup>
     </ElTableColumn>
     <ElTableColumn prop="name" label="Name"/>
-    <ElTableColumn prop="dueDate" label="Due date" width="180"/>
+    <ElTableColumn prop="dueDate" label="Due date" width="180" v-slot="{row}">
+      {{ formatDate(row.dueDate) }}
+    </ElTableColumn>
   </ElTable>
 
   <EditProjectDialog ref="editProjectDialogInstance"/>
