@@ -127,37 +127,41 @@ const removeTask = async (task: Task) => {
     class="project-tasks__list"
     v-loading="isLoading"
   >
-    <ElCard v-for="task in projectTasks">
-      <template #header>
+    <template v-if="projectTasks.length">
+      <ElCard v-for="task in projectTasks">
+        <template #header>
 
-        <div class="task-card__header">
-          <TaskStatusTag :status="task.status"/>
-          <ElButtonGroup>
-            <ElButton
-              icon="edit"
-              @click="openEditTaskDialog(task)"
-            />
-            <ElButton
-              icon="delete"
-              @click="removeTask(task)"
-            />
-          </ElButtonGroup>
-        </div>
+          <div class="task-card__header">
+            <TaskStatusTag :status="task.status"/>
+            <ElButtonGroup>
+              <ElButton
+                icon="edit"
+                @click="openEditTaskDialog(task)"
+              />
+              <ElButton
+                icon="delete"
+                @click="removeTask(task)"
+              />
+            </ElButtonGroup>
+          </div>
 
-        <div class="task-card__priority">
-          <ElText type="info">Priority:</ElText>
-          {{ task.priority }}
-        </div>
+          <div class="task-card__priority">
+            <ElText type="info">Priority:</ElText>
+            {{ task.priority }}
+          </div>
 
-        <div>
-          <ElText type="info">Due date:</ElText>
-          {{ formatDate(task.dueDate) }}
-        </div>
-      </template>
+          <div>
+            <ElText type="info">Due date:</ElText>
+            {{ formatDate(task.dueDate) }}
+          </div>
+        </template>
 
-      <div class="task-card__title">{{ task.title }}</div>
-      <div class="task-card__description">{{ task.description }}</div>
-    </ElCard>
+        <div class="task-card__title">{{ task.title }}</div>
+        <div class="task-card__description">{{ task.description }}</div>
+      </ElCard>
+    </template>
+
+    <ElEmpty v-else description="Empty"/>
   </div>
 
   <EditTaskDialog ref="editTaskDialogInstance"/>
