@@ -22,7 +22,6 @@ export const useTasksStore = defineStore('tasks', () => {
         prioritySort: prioritySort.value
       }
     })
-    console.log(projectTasks.value)
     isLoading.value = false
   }
   

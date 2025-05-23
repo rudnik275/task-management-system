@@ -10,7 +10,6 @@ export const useProjectsStore = defineStore('projects', () => {
     try {
       isLoading.value = true
       projects.value = await api.get('/projects')
-      console.log(projects.value)
     } finally {
       isLoading.value = false
     }
