@@ -2,7 +2,7 @@ import axios, {type AxiosInstance} from 'axios'
 import {axiosMockPlugin} from './axios-mock-plugin.ts'
 import type {Plugin} from 'vue'
 
-const injectionKey: InjectionKey<AxiosInstance> = Symbol()
+export const injectionKey: InjectionKey<AxiosInstance> = Symbol()
 
 export const ApiPlugin: Plugin = (app) => {
   const api = axios.create({
