@@ -14,6 +14,12 @@ export const ApiPlugin: Plugin = (app) => {
   // always returns response data
   api.interceptors.response.use(config => config.data)
   
+  // TODO: accessToken should be here
+  // api.interceptors.request.use((config) => {
+  //   config.headers['Authorization'] = `Bearer ${accessToken}`
+  //   return config
+  // })
+  
   app.provide(injectionKey, api)
 }
 
