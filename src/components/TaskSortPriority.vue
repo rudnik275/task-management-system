@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const model = defineModel()
+const model = defineModel<string>()
 
 const options = [{
   label: 'Low to High',
