@@ -7,10 +7,11 @@ import {useApi} from '@/plugins/api'
 const api = useApi()
 
 const formDefaults = {
-  title: ''
+  title: '',
+  description: ''
 } as Task
 
-const form = reactive({...formDefaults})
+const form = ref({...formDefaults})
 const isLoading = ref(false)
 const dialogInstance = ref<InstanceType<typeof Dialog>>()
 
@@ -18,16 +19,16 @@ defineExpose({
   open: async (projectId: number, formState?: Task) => {
     const isNew = formState === undefined
     if (isNew) {
-      Object.assign(form, formDefaults)
+      form.value = {...formDefaults}
     } else {
-      Object.assign(form, formState)
+      form.value = {...formState}
     }
     await dialogInstance.value!.open()
     isLoading.value = true
     if (isNew) {
-      await api.post(`/projects/${projectId}/tasks`, form)
+      await api.post(`/projects/${projectId}/tasks`, form.value)
     } else {
-      await api.patch(`/projects/${projectId}/tasks/${form.id}`, form)
+      await api.patch(`/projects/${projectId}/tasks/${form.value.id}`, form.value)
     }
     isLoading.value = false
   }

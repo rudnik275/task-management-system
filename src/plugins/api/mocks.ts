@@ -103,7 +103,7 @@ export const fetchApi = (url: string, method = 'get', body: Record<string, any> 
   }
   
   if (routes.projectTaskDetails.test(path)) {
-    const matches = path.match(routes.projectTasks)!
+    const matches = path.match(routes.projectTaskDetails)!
     const projectId = +matches[1] // should be useful later
     const taskId = +matches[2]
     

@@ -35,17 +35,17 @@ const openEditProjectDialog = async (project?: Project) => {
 }
 
 // Remove
-const removeProject = async (row: Project) => {
+const removeProject = async (project: Project) => {
   try {
     await ElMessageBox.confirm(
-      `Project "${row.name}" will be removed permanently`,
+      `Project "${project.name}" will be removed permanently`,
       {
         confirmButtonText: 'Remove',
         cancelButtonText: 'Cancel',
         type: 'warning',
       }
     )
-    await api.delete(`/projects/${row.id}`)
+    await api.delete(`/projects/${project.id}`)
     await loadProjects()
   } catch {
     // in case need to do something on cancel
