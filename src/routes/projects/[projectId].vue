@@ -1,47 +1,44 @@
 <script lang="ts" setup>
-import {type Project, type Task} from '@/types'
+import {type Task} from '@/types'
 import {useApi} from '@/plugins/api'
 import {ElMessageBox} from 'element-plus'
 import EditTaskDialog from '@/components/EditTaskDialog.vue'
 import TaskCard from '@/components/TaskCard.vue'
 import TaskFilterStatus from '@/components/TaskFilterStatus.vue'
 import TaskSortPriority from '@/components/TaskSortPriority.vue'
+import {useTasksStore} from '@/stores/tasks.ts'
 
 const api = useApi()
-const route = useRoute('/projects/[projectId]')
-
-const projectTasks = ref<Task[]>([])
-const project = ref({} as Project)
-const projectId = computed(() => +route.params.projectId)
-const isLoading = ref(false)
-const prioritySort = ref()
-const statusFilter = ref()
-
-const loadProjectTasks = async () => {
-  isLoading.value = true
-  project.value = await api.get(`/projects/${projectId.value}`)
-  projectTasks.value = await api.get(`/projects/${projectId.value}/tasks`, {
-    params: {
-      statusFilter: statusFilter.value,
-      prioritySort: prioritySort.value
-    }
-  })
-  isLoading.value = false
-}
+const tasksStore = useTasksStore()
+const {loadProjectTasks} = tasksStore
+const {
+  projectTasks,
+  project,
+  projectId,
+  isLoading,
+  prioritySort,
+  statusFilter,
+} = toRefs(tasksStore)
 
 watch([statusFilter, prioritySort], loadProjectTasks, {immediate: true})
 
 // Edit
 const editTaskDialogInstance = ref<InstanceType<typeof EditTaskDialog>>()
-const openEditTaskDialog = async (row?: Task) => {
+const openEditTaskDialog = async (task?: Task) => {
   try {
-    await editTaskDialogInstance.value!.open(projectId.value, row)
+    await editTaskDialogInstance.value!.open(projectId.value, task)
+    ElMessage({
+      message: task ? 'Changed' : 'Added',
+      type: 'success',
+      plain: true,
+    })
     await loadProjectTasks()
   } catch {
     // in case need to do something on cancel
   }
 }
 
+// Remove
 const removeTask = async (task: Task) => {
   try {
     await ElMessageBox.confirm(
@@ -53,6 +50,11 @@ const removeTask = async (task: Task) => {
       }
     )
     await api.delete(`/projects/${projectId.value}/tasks/${task.id}`)
+    ElMessage({
+      message: 'Removed',
+      type: 'success',
+      plain: true,
+    })
     await loadProjectTasks()
   } catch {
     // in case need to do something on cancel
@@ -91,7 +93,11 @@ const removeTask = async (task: Task) => {
     <template v-if="projectTasks.length">
       <TaskCard
         v-for="task in projectTasks"
-        :task="task"
+        :title="task.title"
+        :description="task.description"
+        :dueDate="task.dueDate"
+        :status="task.status"
+        :priority="task.priority"
         @edit="openEditTaskDialog(task)"
         @remove="removeTask(task)"
       />

@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import {formatDate} from '@/composables/format-date.ts'
 import TaskStatusTag from '@/components/TaskStatusTag.vue'
-import type {Task} from '@/types'
+import {TaskPriority, TaskStatus} from '@/types'
 
 const {} = defineProps<{
-  task: Task
+  title: string
+  description: string
+  dueDate: string
+  status: TaskStatus
+  priority: TaskPriority
 }>()
 const emit = defineEmits<{
   edit: []
@@ -16,7 +20,7 @@ const emit = defineEmits<{
   <ElCard>
     <template #header>
       <div class="task-card__header">
-        <TaskStatusTag :status="task.status"/>
+        <TaskStatusTag :status="status"/>
         <ElButtonGroup>
           <ElButton
             icon="edit"
@@ -31,17 +35,17 @@ const emit = defineEmits<{
 
       <div class="task-card__priority">
         <ElText type="info">Priority:</ElText>
-        {{ task.priority }}
+        {{ priority }}
       </div>
 
       <div>
         <ElText type="info">Due date:</ElText>
-        {{ formatDate(task.dueDate) }}
+        {{ formatDate(dueDate) }}
       </div>
     </template>
 
-    <div class="task-card__title">{{ task.title }}</div>
-    <div class="task-card__description">{{ task.description }}</div>
+    <div class="task-card__title">{{ title }}</div>
+    <div class="task-card__description">{{ description }}</div>
   </ElCard>
 </template>
 

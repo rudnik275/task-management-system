@@ -4,20 +4,18 @@ import type {Project} from '@/types'
 import EditProjectDialog from '@/components/EditProjectDialog.vue'
 import {ElMessageBox} from 'element-plus'
 import {formatDate} from '@/composables/format-date.ts'
+import {useProjectsStore} from '@/stores/projects.ts'
 
-const projects = ref<Project[]>([])
-
-// Load
 const api = useApi()
-const isLoading = ref(false)
-const loadProjects = async () => {
-  try {
-    isLoading.value = true
-    projects.value = await api.get('/projects')
-  } finally {
-    isLoading.value = false
-  }
-}
+const projectsStore = useProjectsStore()
+
+const {
+  projects,
+  isLoading
+} = toRefs(projectsStore)
+
+const {loadProjects} = projectsStore
+
 loadProjects()
 
 // Open
@@ -29,6 +27,11 @@ const editProjectDialogInstance = ref<InstanceType<typeof EditProjectDialog>>()
 const openEditProjectDialog = async (project?: Project) => {
   try {
     await editProjectDialogInstance.value!.open(project)
+    ElMessage({
+      message: project ? 'Changed' : 'Added',
+      type: 'success',
+      plain: true,
+    })
     await loadProjects()
   } catch {
     // in case need to do something on cancel
@@ -47,6 +50,11 @@ const removeProject = async (project: Project) => {
       }
     )
     await api.delete(`/projects/${project.id}`)
+    ElMessage({
+      message: 'Removed',
+      type: 'success',
+      plain: true,
+    })
     await loadProjects()
   } catch {
     // in case need to do something on cancel
