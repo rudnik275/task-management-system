@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import type {Project, Task} from '@/types'
+import {type Project, type Task, TaskStatus} from '@/types'
 
 import {useApi} from '@/plugins/api'
-import EditTaskDialog from '@/components/EditTaskDialog.vue'
 import {ElMessageBox} from 'element-plus'
+import EditTaskDialog from '@/components/EditTaskDialog.vue'
+import TaskStatusTag from '@/components/TaskStatusTag.vue'
 
 const api = useApi()
 const route = useRoute('/projects/[projectId]')
@@ -12,6 +13,21 @@ const projectTasks = ref<Task[]>([])
 const project = ref({} as Project)
 const projectId = computed(() => +route.params.projectId)
 const isLoading = ref(false)
+const prioritySort = ref()
+const statusFilter = ref('')
+const statusFilterOptions = [{
+  label: 'None',
+  value: ''
+}, {
+  label: 'Pending',
+  value: TaskStatus.Pending
+}, {
+  label: 'In progress',
+  value: TaskStatus.InProgress
+}, {
+  label: 'Completed',
+  value: TaskStatus.Completed
+}]
 
 const loadProjectTasks = async () => {
   isLoading.value = true
@@ -57,30 +73,71 @@ const removeTask = async (task: Task) => {
     </h1>
     <ElButton
       icon="plus"
+      :disabled="isLoading"
       @click="openEditTaskDialog()"
     >
-      <!--      :disabled="isLoading"-->
       Add new task
     </ElButton>
   </div>
 
-  <div v-loading="isLoading">
+  <div class="project-tasks__filter-panel">
+    <RouterLink to="/">
+      <ElButton icon="arrow-left">Back to all projects</ElButton>
+    </RouterLink>
+
+    <div>
+      <ElFormItem label="Sort by priority">
+        <ElSelect
+          v-model="prioritySort"
+          clearable
+        >
+          <ElOption label="Low to High" value="asc"/>
+          <ElOption label="High to Low" value="desc"/>
+        </ElSelect>
+      </ElFormItem>
+
+      <ElFormItem label="Filter by status">
+        <ElSegmented
+          v-model="statusFilter"
+          :options="statusFilterOptions"
+        />
+      </ElFormItem>
+    </div>
+  </div>
+  <div
+    class="project-tasks__list"
+    v-loading="isLoading"
+  >
     <ElCard v-for="task in projectTasks">
       <template #header>
-        <span>{{ task.title }}</span>
-        <ElButton
-          icon="edit"
-          @click="openEditTaskDialog(task)"
-        />
-        <ElButton
-          icon="delete"
-          @click="removeTask(task)"
-        />
-      </template>
-      {{ task.description }}
-      <pre>{{ task }}</pre>
 
-      <template #footer>Footer content</template>
+        <div class="task-card__header">
+          <TaskStatusTag :status="task.status"/>
+          <ElButtonGroup>
+            <ElButton
+              icon="edit"
+              @click="openEditTaskDialog(task)"
+            />
+            <ElButton
+              icon="delete"
+              @click="removeTask(task)"
+            />
+          </ElButtonGroup>
+        </div>
+
+        <div class="task-card__priority">
+          <ElText type="info">Priority:</ElText>
+          {{ task.priority }}
+        </div>
+
+        <div>
+          <ElText type="info">Due date:</ElText>
+          {{ task.dueDate }}
+        </div>
+      </template>
+
+      <div class="task-card__title">{{ task.title }}</div>
+      <div class="task-card__description">{{ task.description }}</div>
     </ElCard>
   </div>
 
@@ -98,5 +155,42 @@ const removeTask = async (task: Task) => {
 .project-tasks__title {
   font-size: 28px;
   margin-right: auto;
+}
+
+.project-tasks__filter-panel {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.project-tasks__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 12px;
+}
+
+.task-card__header {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.task-card__priority {
+  margin: 8px 0;
+}
+
+.task-card__title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.task-card__description {
+  line-height: 1.4;
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--el-color-info);
 }
 </style>

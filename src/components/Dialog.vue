@@ -25,6 +25,7 @@ defineExpose({
   <ElDialog
     v-model="isVisible"
     width="500"
+    title="Create/Edit"
   >
     <slot/>
 
