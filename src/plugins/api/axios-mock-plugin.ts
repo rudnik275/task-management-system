@@ -9,7 +9,7 @@ export const axiosMockPlugin = (instance: AxiosInstance) => {
     await new Promise(res => setTimeout(res, REQUEST_TIMEOUT))
     
     // in case it's mocked request it returns some data
-    const response = fetchApi(config.url!, config.method?.toLocaleLowerCase(), config.data)
+    const response = fetchApi(config.url!, config.method?.toLocaleLowerCase(), config.data || config.params)
     if (response) {
       // throw it to catch mocked requests in response interceptor
       throw {

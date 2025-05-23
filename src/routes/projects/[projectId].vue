@@ -36,10 +36,16 @@ const prioritySortOptions = [{
 const loadProjectTasks = async () => {
   isLoading.value = true
   project.value = await api.get(`/projects/${projectId.value}`)
-  projectTasks.value = await api.get(`/projects/${projectId.value}/tasks`)
+  projectTasks.value = await api.get(`/projects/${projectId.value}/tasks`, {
+    params: {
+      statusFilter: statusFilter.value,
+      prioritySort: prioritySort.value
+    }
+  })
   isLoading.value = false
 }
-loadProjectTasks()
+
+watch([statusFilter, prioritySort], loadProjectTasks, {immediate: true})
 
 // Edit
 const editTaskDialogInstance = ref<InstanceType<typeof EditTaskDialog>>()
@@ -91,24 +97,24 @@ const removeTask = async (task: Task) => {
 
     <div class="project-tasks__filter-panel__filters">
       <ElSelect
-        v-model="prioritySort"
-        placeholder="Sort by priority"
-        clearable
-      >
-        <ElOption
-          v-for="{label, value} in prioritySortOptions"
-          :label="label"
-          :value="value"
-        />
-      </ElSelect>
-
-      <ElSelect
         v-model="statusFilter"
         placeholder="Filter by status"
         clearable
       >
         <ElOption
           v-for="{label, value} in statusFilterOptions"
+          :label="label"
+          :value="value"
+        />
+      </ElSelect>
+
+      <ElSelect
+        v-model="prioritySort"
+        placeholder="Sort by priority"
+        clearable
+      >
+        <ElOption
+          v-for="{label, value} in prioritySortOptions"
           :label="label"
           :value="value"
         />
