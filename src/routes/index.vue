@@ -12,7 +12,6 @@ const isLoading = ref(false)
 const loadProjects = async () => {
   try {
     isLoading.value = true
-
     projects.value = await api.get('/projects')
   } finally {
     isLoading.value = false
@@ -26,9 +25,9 @@ const handleClickRow = (row: Project) => router.push(`/projects/${row.id}`)
 
 // Edit
 const editProjectDialogInstance = ref<InstanceType<typeof EditProjectDialog>>()
-const openEditProjectDialog = async (row?: Project) => {
+const openEditProjectDialog = async (project?: Project) => {
   try {
-    await editProjectDialogInstance.value!.open(row?.id)
+    await editProjectDialogInstance.value!.open(project)
     await loadProjects()
   } catch {
     // in case need to do something on cancel
@@ -68,6 +67,8 @@ const removeProject = async (row: Project) => {
     </ElButton>
   </div>
 
+  <!-- TODO: fix update (rerender) table on change -->
+  <pre>{{ projects }}</pre>
   <ElTable
     :data="projects"
     v-loading="isLoading"
@@ -95,7 +96,7 @@ const removeProject = async (row: Project) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
 }
 
 .projects__title {
