@@ -24,7 +24,7 @@ defineExpose({
 <template>
   <ElDialog
     v-model="isVisible"
-    width="500"
+    class="base-dialog"
     title="Create/Edit"
   >
     <slot/>
@@ -48,4 +48,8 @@ defineExpose({
 </template>
 
 <style>
+.base-dialog {
+  max-width: 500px;
+  width: 100%;
+}
 </style>

@@ -62,7 +62,7 @@ const openEditTaskDialog = async (row?: Task) => {
 const removeTask = async (task: Task) => {
   try {
     await ElMessageBox.confirm(
-      `Project "${task.title}" will be removed permanently`,
+      `Task "${task.title}" will be removed permanently`,
       {
         confirmButtonText: 'Remove',
         cancelButtonText: 'Cancel',
@@ -171,6 +171,7 @@ const removeTask = async (task: Task) => {
 .project-tasks__header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 60px;
 }
@@ -183,12 +184,14 @@ const removeTask = async (task: Task) => {
 .project-tasks__filter-panel {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 20px;
 }
 
 .project-tasks__filter-panel__filters {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 
   & > * {
@@ -200,13 +203,18 @@ const removeTask = async (task: Task) => {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 12px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .task-card__header {
   display: flex;
-  gap: 20px;
+  gap: 12px;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 8px;
 }
 
