@@ -16,28 +16,6 @@ const taskTable: TaskTableRecord[] = []
 
 let idCounter = 0
 
-// TODO: remove (dev only)
-const newProject = {id: idCounter++, name: 'first project 123'} as ProjectTableRecord
-projectTable.push(newProject)
-taskTable.push({
-  id: idCounter++,
-  projectId: newProject.id,
-  title: 'first task',
-  description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis consectetur, corporis debitis dignissimos eaque et fugiat hic in incidunt magni minus modi officia officiis perferendis, quas quia recusandae temporibus.',
-  status: 'completed',
-  dueDate: new Date().toISOString(),
-  priority: 'medium'
-})
-taskTable.push({
-  id: idCounter++,
-  projectId: newProject.id,
-  title: 'first task',
-  description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis consectetur, corporis debitis dignissimos eaque et fugiat hic in incidunt magni minus modi officia officiis perferendis, quas quia recusandae temporibus.',
-  status: 'pending',
-  dueDate: new Date().toISOString(),
-  priority: 'medium'
-})
-
 const routes = {
   projectDetails: new RegExp('^/projects/(\\d+)$'),
   projectTasks: new RegExp('^/projects/(\\d+)/tasks$'),
