@@ -102,6 +102,7 @@ export const fetchApi = (path: string, method = 'get', body: Record<string, any>
         return tasks
       case 'post':
         const newTask = {
+          id: idCounter++,
           projectId,
           ...body
         } as TaskTableRecord

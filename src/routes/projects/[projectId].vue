@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {type Task} from '@/types'
 import {useApi} from '@/plugins/api'
-import {ElMessageBox} from 'element-plus'
 import EditTaskDialog from '@/components/EditTaskDialog.vue'
 import TaskCard from '@/components/TaskCard.vue'
 import TaskFilterStatus from '@/components/TaskFilterStatus.vue'

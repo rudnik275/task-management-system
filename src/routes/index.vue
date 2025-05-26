@@ -2,7 +2,6 @@
 import {useApi} from '@/plugins/api'
 import type {Project} from '@/types'
 import EditProjectDialog from '@/components/EditProjectDialog.vue'
-import {ElMessageBox} from 'element-plus'
 import {formatDate} from '@/composables/format-date.ts'
 import {useProjectsStore} from '@/stores/projects.ts'
 
