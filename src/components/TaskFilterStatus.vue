@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {TaskStatus} from '@/types'
 
-const model = defineModel<TaskStatus>()
+const model = defineModel<TaskStatus[]>()
 
 const options = [{
   label: 'Pending',
@@ -18,7 +18,7 @@ const options = [{
 <template>
   <ElSelect
     v-model="model"
-    placeholder="Filter by status"
+    multiple
     clearable
   >
     <ElOption

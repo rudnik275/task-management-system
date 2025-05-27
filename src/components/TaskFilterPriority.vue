@@ -1,19 +1,24 @@
 <script lang="ts" setup>
-const model = defineModel<string>()
+import {TaskPriority} from '@/types'
+
+const model = defineModel<TaskPriority[]>()
 
 const options = [{
-  label: 'Low to High',
-  value: 'asc'
+  label: 'Low',
+  value: TaskPriority.Low
 }, {
-  label: 'High to Low',
-  value: 'desc'
+  label: 'Medium',
+  value: TaskPriority.Medium
+}, {
+  label: 'High',
+  value: TaskPriority.High
 }]
 </script>
 
 <template>
   <ElSelect
     v-model="model"
-    placeholder="Sort by priority"
+    multiple
     clearable
   >
     <ElOption

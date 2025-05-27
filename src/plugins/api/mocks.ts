@@ -1,5 +1,4 @@
 import type {Project, Task} from '@/types'
-import {TaskPriority} from '@/types'
 
 type ProjectTableRecord = Project & {
   id: number
@@ -83,23 +82,7 @@ export const fetchApi = (path: string, method = 'get', body: Record<string, any>
     
     switch (method) {
       case 'get':
-        const tasks = taskTable.filter(task => task.projectId === projectId)
-        if (body.prioritySort) {
-          tasks.sort((a, b) => {
-            const getPriorityIndex = (priority: TaskPriority) => Object.values(TaskPriority).indexOf(priority)
-            switch (body.prioritySort) {
-              case 'asc':
-                return getPriorityIndex(a.priority) - getPriorityIndex(b.priority)
-              case 'desc':
-                return getPriorityIndex(b.priority) - getPriorityIndex(a.priority)
-            }
-            return 0
-          })
-        }
-        if (body.statusFilter) {
-          return tasks.filter(task => task.status === body.statusFilter)
-        }
-        return tasks
+        return Array.from(taskTable)
       case 'post':
         const newTask = {
           id: idCounter++,

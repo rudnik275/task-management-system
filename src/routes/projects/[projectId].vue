@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import {type Task} from '@/types'
 import {useApi} from '@/plugins/api'
+import {useTasksStore} from '@/stores/tasks.ts'
 import EditTaskDialog from '@/components/EditTaskDialog.vue'
 import TaskCard from '@/components/TaskCard.vue'
 import TaskFilterStatus from '@/components/TaskFilterStatus.vue'
-import TaskSortPriority from '@/components/TaskSortPriority.vue'
-import {useTasksStore} from '@/stores/tasks.ts'
+import TaskFilterPriority from '@/components/TaskFilterPriority.vue'
+import TaskSortAttr from '@/components/TaskSortAttr.vue'
+import TaskSortDirection from '@/components/TaskSortDirection.vue'
 
 const api = useApi()
 const tasksStore = useTasksStore()
@@ -15,11 +17,13 @@ const {
   project,
   projectId,
   isLoading,
-  prioritySort,
+  priorityFilter,
+  sortAttr,
+  sortDirection,
   statusFilter,
 } = toRefs(tasksStore)
 
-watch([statusFilter, prioritySort], loadProjectTasks, {immediate: true})
+loadProjectTasks()
 
 // Edit
 const editTaskDialogInstance = ref<InstanceType<typeof EditTaskDialog>>()
@@ -80,10 +84,20 @@ const removeTask = async (task: Task) => {
       <ElButton icon="arrow-left">Back to all projects</ElButton>
     </RouterLink>
 
-    <div class="project-tasks__filter-panel__filters">
-      <TaskFilterStatus v-model="statusFilter"/>
-      <TaskSortPriority v-model="prioritySort"/>
-    </div>
+    <ElForm label-width="auto" class="project-tasks__filter-panel__form">
+      <ElFormItem label="Filter by status:">
+        <TaskFilterStatus v-model="statusFilter"/>
+      </ElFormItem>
+      <ElFormItem label="Filter by priority:">
+        <TaskFilterPriority v-model="priorityFilter"/>
+      </ElFormItem>
+      <ElFormItem label="Sort by field:">
+        <TaskSortAttr v-model="sortAttr"/>
+      </ElFormItem>
+      <ElFormItem label="Sort direction:">
+        <TaskSortDirection v-model="sortDirection"/>
+      </ElFormItem>
+    </ElForm>
   </div>
   <div
     class="project-tasks__list"
@@ -130,16 +144,6 @@ const removeTask = async (task: Task) => {
   margin-bottom: 20px;
 }
 
-.project-tasks__filter-panel__filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-
-  & > * {
-    width: 200px;
-  }
-}
-
 .project-tasks__list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -148,5 +152,10 @@ const removeTask = async (task: Task) => {
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
+}
+
+.project-tasks__filter-panel__form {
+  flex-grow: 1;
+  max-width: 350px;
 }
 </style>
