@@ -4,10 +4,7 @@ import {useApi} from '@/plugins/api'
 import {useTasksStore} from '@/stores/tasks.ts'
 import EditTaskDialog from '@/components/EditTaskDialog.vue'
 import TaskCard from '@/components/TaskCard.vue'
-import TaskFilterStatus from '@/components/TaskFilterStatus.vue'
-import TaskFilterPriority from '@/components/TaskFilterPriority.vue'
-import TaskSortAttr from '@/components/TaskSortAttr.vue'
-import TaskSortDirection from '@/components/TaskSortDirection.vue'
+import TaskFilters from '@/components/TaskFilters.vue'
 
 const api = useApi()
 const tasksStore = useTasksStore()
@@ -17,10 +14,6 @@ const {
   project,
   projectId,
   isLoading,
-  priorityFilter,
-  sortAttr,
-  sortDirection,
-  statusFilter,
 } = toRefs(tasksStore)
 
 loadProjectTasks()
@@ -84,20 +77,7 @@ const removeTask = async (task: Task) => {
       <ElButton icon="arrow-left">Back to all projects</ElButton>
     </RouterLink>
 
-    <ElForm label-width="auto" class="project-tasks__filter-panel__form">
-      <ElFormItem label="Filter by status:">
-        <TaskFilterStatus v-model="statusFilter"/>
-      </ElFormItem>
-      <ElFormItem label="Filter by priority:">
-        <TaskFilterPriority v-model="priorityFilter"/>
-      </ElFormItem>
-      <ElFormItem label="Sort by field:">
-        <TaskSortAttr v-model="sortAttr"/>
-      </ElFormItem>
-      <ElFormItem label="Sort direction:">
-        <TaskSortDirection v-model="sortDirection"/>
-      </ElFormItem>
-    </ElForm>
+    <TaskFilters/>
   </div>
   <div
     class="project-tasks__list"
@@ -152,10 +132,5 @@ const removeTask = async (task: Task) => {
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
-}
-
-.project-tasks__filter-panel__form {
-  flex-grow: 1;
-  max-width: 350px;
 }
 </style>
