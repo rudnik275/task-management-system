@@ -87,7 +87,8 @@ export const fetchApi = (path: string, method = 'get', body: Record<string, any>
         const newTask = {
           id: idCounter++,
           projectId,
-          ...body
+          ...body,
+          dueDate: body.dueDate || new Date().toISOString(),
         } as TaskTableRecord
         taskTable.push(newTask)
         return newTask
