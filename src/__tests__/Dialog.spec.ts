@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest'
 import {mount} from '@vue/test-utils'
 import {nextTick} from 'vue'
-import Dialog from '../Dialog.vue'
+import Dialog from '@/components/Dialog.vue'
 
 describe('Dialog', () => {
   it('should open dialog and handle cancel', async () => {
@@ -12,8 +12,7 @@ describe('Dialog', () => {
     
     expect(wrapper.find('.el-dialog').exists()).toBe(true)
     
-    const buttons = wrapper.findAll('button')
-    const cancelButton = buttons.find(button => button.text() === 'Cancel')
+    const cancelButton = wrapper.find('[data-test="cancel"]')
     expect(cancelButton).toBeDefined()
     
     await cancelButton!.trigger('click')
@@ -30,8 +29,7 @@ describe('Dialog', () => {
     expect(dialog.exists()).toBe(true)
     expect(dialog.isVisible()).toBe(true)
     
-    const buttons = wrapper.findAll('button')
-    const confirmButton = buttons.find(button => button.text() === 'Confirm')
+    const confirmButton = wrapper.find('[data-test="confirm"]')
     expect(confirmButton).toBeDefined()
     
     await confirmButton!.trigger('click')

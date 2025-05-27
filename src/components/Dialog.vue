@@ -32,12 +32,14 @@ defineExpose({
     <template #footer>
       <div class="dialog-footer">
         <el-button
+          data-test="cancel"
           @click="cancelEdit?.()"
         >
           Cancel
         </el-button>
         <el-button
           type="primary"
+          data-test="confirm"
           @click="successEdit?.()"
         >
           Confirm

@@ -1,7 +1,7 @@
 import {describe, expect, it, vi} from 'vitest'
 import {mount} from '@vue/test-utils'
 import {nextTick} from 'vue'
-import EditTaskDialog from '../EditTaskDialog.vue'
+import EditTaskDialog from '@/components/EditTaskDialog.vue'
 import {injectionKey as apiInjectionKey} from '@/plugins/api'
 import {TaskPriority, TaskStatus} from '@/types'
 

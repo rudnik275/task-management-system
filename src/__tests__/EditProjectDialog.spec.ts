@@ -1,7 +1,7 @@
 import {describe, expect, it, vi} from 'vitest'
 import {mount} from '@vue/test-utils'
 import {nextTick} from 'vue'
-import EditProjectDialog from '../EditProjectDialog.vue'
+import EditProjectDialog from '@/components/EditProjectDialog.vue'
 import {injectionKey as apiInjectionKey} from '@/plugins/api'
 import type {Project} from '@/types'
 
