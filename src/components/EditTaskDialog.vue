@@ -75,21 +75,21 @@ defineExpose({
         <ElSegmented
           v-model="form.priority"
           :options="priorityOptions"
-          data-test-id="priority"
+          data-test="priority"
         />
       </ElFormItem>
       <ElFormItem label="Status">
         <ElSegmented
           v-model="form.status"
           :options="statusOptions"
-          data-test-id="status"
+          data-test="status"
         />
       </ElFormItem>
       <ElFormItem label="Title">
-        <ElInput v-model="form.title" autocomplete="off" data-test-id="title"/>
+        <ElInput v-model="form.title" autocomplete="off" data-test="title"/>
       </ElFormItem>
       <ElFormItem label="Description">
-        <ElInput v-model="form.description" autocomplete="off" type="textarea" data-test-id="description"/>
+        <ElInput v-model="form.description" autocomplete="off" type="textarea" data-test="description"/>
       </ElFormItem>
     </ElForm>
   </Dialog>

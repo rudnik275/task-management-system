@@ -29,10 +29,10 @@ describe('EditTaskDialog', () => {
     const openPromise = vm.open(projectId)
     await nextTick()
     
-    await wrapper.find('[data-test-id="priority"] .el-segmented__item').trigger('click')
-    await wrapper.find('[data-test-id="status"] .el-segmented__item').trigger('click')
-    await wrapper.find('input[data-test-id="title"]').setValue('Task title')
-    await wrapper.find('textarea[data-test-id="description"]').setValue('Description')
+    await wrapper.find('[data-test="priority"] .el-segmented__item').trigger('click')
+    await wrapper.find('[data-test="status"] .el-segmented__item').trigger('click')
+    await wrapper.find('input[data-test="title"]').setValue('Task title')
+    await wrapper.find('textarea[data-test="description"]').setValue('Description')
     
     const confirmButton = wrapper.findAll('button').find(btn => btn.text() === 'Confirm')
     expect(confirmButton).toBeDefined()

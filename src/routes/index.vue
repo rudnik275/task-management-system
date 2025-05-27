@@ -69,6 +69,7 @@ const removeProject = async (project: Project) => {
     <ElButton
       icon="plus"
       :disabled="isLoading"
+      data-test="add-new-project"
       @click="openEditProjectDialog()"
     >
       Add new project
