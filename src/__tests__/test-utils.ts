@@ -5,6 +5,7 @@ import {ElMessage, ElMessageBox} from 'element-plus'
 import App from '@/App.vue'
 import {createPinia} from 'pinia'
 import {ApiPlugin} from '@/plugins/api'
+import type {Task} from '@/types'
 
 export const createWrapper = async () => {
   await router.push('/')
@@ -39,18 +40,27 @@ export const addProject = async (wrapper: VueWrapper, name: string) => {
   )
 }
 
-export const addTask = async (wrapper: VueWrapper, name: string, description: string) => {
-  await addProject(wrapper, 'Project')
-  await router.push('/projects/0')
+export const addTask = async (wrapper: VueWrapper, {
+  title,
+  description = 'Empty description',
+  priority,
+  status
+}: Partial<Task>) => {
   await vi.waitUntil(() => wrapper.find('[data-test="task-create-button"]').attributes('disabled') === undefined)
   await wrapper.find('[data-test="task-create-button"]').trigger('click')
-  await wrapper.find('[data-test="input-title"]').setValue(name)
+  await wrapper.find('[data-test="input-title"]').setValue(title)
   await wrapper.find('[data-test="input-description"]').setValue(description)
+  if (status) {
+    await wrapper.findComponent('[data-test="status-radio-buttons"]').setValue(status)
+  }
+  if (priority) {
+    await wrapper.findComponent('[data-test="priority-radio-buttons"]').setValue(priority)
+  }
   await wrapper.find('[data-test="confirm"]').trigger('click')
   await vi.waitUntil(() => wrapper
     .findAll('.el-card')
     .some(
-      card => card.text().includes(name)
+      card => card.text().includes(title!)
     )
   )
 }

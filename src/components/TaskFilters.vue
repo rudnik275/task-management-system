@@ -27,10 +27,13 @@ const visible = ref(false)
     placement="bottom"
     :visible="visible"
     popper-class="filter-popover"
+    :teleported="false"
   >
     <template #reference>
       <ElBadge :show-zero="false" :value="appliedFiltersCount" class="item">
-        <ElButton @click="visible = !visible">{{ visible ? 'Hide' : 'Show' }} filters</ElButton>
+        <ElButton @click="visible = !visible" data-test="tasks-filter-button">
+          {{ visible ? 'Hide' : 'Show' }} filters
+        </ElButton>
       </ElBadge>
     </template>
 
@@ -39,16 +42,16 @@ const visible = ref(false)
     </div>
 
     <ElFormItem label="Filter by status:">
-      <TaskFilterStatus v-model="statusFilter"/>
+      <TaskFilterStatus v-model="statusFilter" data-test="tasks-filter-status-select"/>
     </ElFormItem>
     <ElFormItem label="Filter by priority:">
-      <TaskFilterPriority v-model="priorityFilter"/>
+      <TaskFilterPriority v-model="priorityFilter" data-test="tasks-filter-priority-select"/>
     </ElFormItem>
     <ElFormItem label="Sort by field:">
-      <TaskSortAttr v-model="sortAttr"/>
+      <TaskSortAttr v-model="sortAttr" data-test="tasks-sort-field-select"/>
     </ElFormItem>
     <ElFormItem label="Sort direction:">
-      <TaskSortDirection v-model="sortDirection"/>
+      <TaskSortDirection v-model="sortDirection" data-test="tasks-sort-direction-select"/>
     </ElFormItem>
   </ElPopover>
 </template>
