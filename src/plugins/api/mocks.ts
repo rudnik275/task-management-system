@@ -1,5 +1,5 @@
-import {type Project, type Task, TaskPriority, TaskStatus} from '@/types'
-import type {AxiosInstance} from 'axios'
+import {type Project, type Task} from '@/types'
+import {type AxiosInstance} from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
 
 type ProjectTableRecord = Project & {
@@ -49,9 +49,14 @@ export const initMocks = (api: AxiosInstance, delayResponse = 500) => {
     return [200, serializeProject(newProject)]
   })
   
-  mock.onAny(routes.projectDetails).reply(({url, method, data}) => {
+  mock.onAny(routes.projectDetails).reply(({url, method, data, headers}) => {
     const matches = url!.match(routes.projectDetails)!
     const projectId = +matches[1]
+    
+    const token = headers?.Authorization
+    if (!token) {
+      return [401, {message: 'Unauthorized'}]
+    }
     
     switch (method) {
       case 'get':
@@ -75,9 +80,14 @@ export const initMocks = (api: AxiosInstance, delayResponse = 500) => {
     return [404]
   })
   
-  mock.onAny(routes.projectTasks).reply(({url, method, data}) => {
+  mock.onAny(routes.projectTasks).reply(({url, method, data, headers}) => {
     const matches = url!.match(routes.projectTasks)!
     const projectId = +matches[1]
+    
+    const token = headers?.Authorization
+    if (!token) {
+      return [401, {message: 'Unauthorized'}]
+    }
     
     switch (method) {
       case 'get':
@@ -96,10 +106,15 @@ export const initMocks = (api: AxiosInstance, delayResponse = 500) => {
     return [404]
   })
   
-  mock.onAny(routes.projectTaskDetails).reply(({url, method, data}) => {
+  mock.onAny(routes.projectTaskDetails).reply(({url, method, data, headers}) => {
     const matches = url!.match(routes.projectTaskDetails)!
     const projectId = +matches[1] // should be useful later
     const taskId = +matches[2]
+    
+    const token = headers?.Authorization
+    if (!token) {
+      return [401, {message: 'Unauthorized'}]
+    }
     
     switch (method) {
       case 'patch': {

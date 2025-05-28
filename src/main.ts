@@ -14,4 +14,6 @@ app.use(router)
 app.use(ElementPlusIcons)
 app.use(ApiPlugin)
 
+localStorage.setItem('accessToken', '1')
+
 app.mount('#app')

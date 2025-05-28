@@ -12,13 +12,21 @@ export const ApiPlugin: Plugin = (app, options = {}) => {
   initMocks(api, options.delayResponse)
   
   // always returns response data
-  api.interceptors.response.use(config => config.data)
+  api.interceptors.response.use(config => config.data, (error) => {
+    if (error.status === 401) {
+      ElMessage({
+        message: 'Authorization error',
+        type: 'error',
+      })
+    }
+  })
   
-  // TODO: accessToken should be here
-  // api.interceptors.request.use((config) => {
-  //   config.headers['Authorization'] = `Bearer ${accessToken}`
-  //   return config
-  // })
+  api.interceptors.request.use((config) => {
+    if (localStorage.getItem('accessToken')) {
+      config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`
+    }
+    return config
+  })
   
   app.provide(injectionKey, api)
 }

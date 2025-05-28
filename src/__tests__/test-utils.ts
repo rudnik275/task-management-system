@@ -27,6 +27,8 @@ export const createWrapper = async () => {
   })
   await vi.waitUntil(() => wrapper.find('[data-test="add-new-project"]').attributes('disabled') === undefined)
   
+  localStorage.setItem('accessToken', '1')
+  
   return {wrapper, router}
 }
 
