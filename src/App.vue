@@ -33,7 +33,7 @@ onMounted(() => {
 <style>
 .auth-token-demo {
   margin-top: 40px;
-  padding: 20px 0;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
