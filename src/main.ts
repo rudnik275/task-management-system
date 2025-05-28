@@ -12,7 +12,7 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlusIcons)
-app.use(ApiPlugin)
+app.use(ApiPlugin, {delayResponse: 500})
 
 localStorage.setItem('accessToken', '1')
 
