@@ -66,6 +66,7 @@ const removeTask = async (task: Task) => {
     <ElButton
       icon="plus"
       :disabled="isLoading"
+      data-test="task-create-button"
       @click="openEditTaskDialog()"
     >
       Add new task

@@ -24,10 +24,12 @@ const emit = defineEmits<{
         <ElButtonGroup>
           <ElButton
             icon="edit"
+            data-test="task-edit-button"
             @click="emit('edit')"
           />
           <ElButton
             icon="delete"
+            data-test="task-remove-button"
             @click="emit('remove')"
           />
         </ElButtonGroup>

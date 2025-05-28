@@ -38,3 +38,19 @@ export const addProject = async (wrapper: VueWrapper, name: string) => {
     .includes(name)
   )
 }
+
+export const addTask = async (wrapper: VueWrapper, name: string, description: string) => {
+  await addProject(wrapper, 'Project')
+  await router.push('/projects/0')
+  await vi.waitUntil(() => wrapper.find('[data-test="task-create-button"]').attributes('disabled') === undefined)
+  await wrapper.find('[data-test="task-create-button"]').trigger('click')
+  await wrapper.find('[data-test="input-title"]').setValue(name)
+  await wrapper.find('[data-test="input-description"]').setValue(description)
+  await wrapper.find('[data-test="confirm"]').trigger('click')
+  await vi.waitUntil(() => wrapper
+    .findAll('.el-card')
+    .some(
+      card => card.text().includes(name)
+    )
+  )
+}
