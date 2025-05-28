@@ -11,51 +11,14 @@ type TaskTableRecord = Task & {
   projectId: number
 }
 
-const initDevData = (projectTable: ProjectTableRecord[], taskTable: TaskTableRecord[], idCounter: number) => {
-  const newProject = {
-    id: idCounter++,
-    name: 'test',
-  } as ProjectTableRecord
-  projectTable.push(newProject)
-  
-  taskTable.push({
-    id: idCounter++,
-    title: 'test',
-    dueDate: new Date('11/1/1983').toISOString(),
-    status: TaskStatus.InProgress,
-    priority: TaskPriority.Low,
-    description: 'descr',
-    projectId: newProject.id
-  })
-  taskTable.push({
-    id: idCounter++,
-    title: 'test',
-    dueDate: new Date('11/2/1983').toISOString(),
-    status: TaskStatus.InProgress,
-    priority: TaskPriority.Low,
-    description: 'descr',
-    projectId: newProject.id
-  })
-  taskTable.push({
-    id: idCounter++,
-    title: 'test',
-    dueDate: new Date('11/1/1973').toISOString(),
-    status: TaskStatus.InProgress,
-    priority: TaskPriority.Low,
-    description: 'descr',
-    projectId: newProject.id
-  })
-}
-
 export const initMocks = (api: AxiosInstance, delayResponse = 500) => {
+  // @ts-expect-error: because AxiosMockAdapter and current axios in project has different versions
   const mock = new AxiosMockAdapter(api, {delayResponse})
   
   const projectTable: ProjectTableRecord[] = []
   const taskTable: TaskTableRecord[] = []
   
   let idCounter = 0
-  
-  // initDevData(projectTable, taskTable, idCounter)
   
   const routes = {
     projectDetails: new RegExp('^/projects/(\\d+)$'),
