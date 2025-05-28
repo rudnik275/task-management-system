@@ -80,6 +80,7 @@ const removeProject = async (project: Project) => {
     :data="projects"
     v-loading="isLoading"
     class="projects__table"
+    data-test="table"
     @row-click="handleClickRow"
   >
     <ElTableColumn
@@ -87,8 +88,16 @@ const removeProject = async (project: Project) => {
       v-slot="{row}"
     >
       <ElButtonGroup>
-        <ElButton icon="edit" @click.stop="openEditProjectDialog(row)"/>
-        <ElButton icon="delete" @click.stop="removeProject(row)"/>
+        <ElButton
+          icon="edit"
+          @click.stop="openEditProjectDialog(row)"
+          data-test="edit-project-button"
+        />
+        <ElButton
+          icon="delete"
+          data-test="delete-project-button"
+          @click.stop="removeProject(row)"
+        />
       </ElButtonGroup>
     </ElTableColumn>
     <ElTableColumn prop="name" label="Name"/>

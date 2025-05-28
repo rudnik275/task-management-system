@@ -36,11 +36,10 @@ defineExpose({
   <Dialog ref="dialogInstance">
     <ElForm
       :model="form"
-      label-width="auto"
       v-loading="isLoading"
     >
       <ElFormItem label="Name">
-        <ElInput v-model="form.name" autocomplete="off"/>
+        <ElInput v-model="form.name" autocomplete="off" data-test="name-input"/>
       </ElFormItem>
     </ElForm>
   </Dialog>
