@@ -2,7 +2,7 @@
 
 This app allows you to manage tasks by project.
 
-[🔗 Demo](https://melodious-madeleine-54edc2.netlify.app/)
+# [🔗 Demo](https://melodious-madeleine-54edc2.netlify.app/)
 
 ## 📁 Folder structure
 
